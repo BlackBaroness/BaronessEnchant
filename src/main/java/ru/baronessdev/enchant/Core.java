@@ -30,7 +30,7 @@ public final class Core extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
