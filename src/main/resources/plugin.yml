@@ -1,0 +1,6 @@
+name: BaronessEnchant
+version: ${project.version}
+main: ru.baronessdev.enchant.Core
+authors: [ Black_Baroness ]
+description: Плагин, добавляющий возможность зачаровывать вещи, перенося книгу с зачарованием на предмет прямо в инвентаре
+website: baronessdev.ru
