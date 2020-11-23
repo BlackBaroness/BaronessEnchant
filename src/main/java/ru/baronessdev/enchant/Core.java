@@ -34,8 +34,9 @@ public final class Core extends JavaPlugin implements Listener {
     private void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (!getConfig().getBoolean("use-permission")) return;
-        if (!p.hasPermission(getConfig().getString("permission"))) return;
+        if (getConfig().getBoolean("use-permission")) {
+            if (!p.hasPermission(getConfig().getString("permission"))) return;
+        }
 
         ItemStack current = e.getCurrentItem();
 
