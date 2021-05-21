@@ -1,5 +1,6 @@
 package ru.baronessdev.free.enchant;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,7 +19,6 @@ import ru.baronessdev.free.enchant.logging.Logger;
 import ru.baronessdev.free.enchant.util.UpdateCheckerUtil;
 
 import java.util.HashMap;
-import java.util.logging.LogManager;
 
 public final class Enchant extends JavaPlugin implements Listener {
 
@@ -30,6 +30,7 @@ public final class Enchant extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
 
         checkUpdates();
+        new Metrics(this, 11435);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
