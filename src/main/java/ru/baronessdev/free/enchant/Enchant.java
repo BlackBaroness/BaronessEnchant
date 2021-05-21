@@ -1,4 +1,4 @@
-package ru.baronessdev.enchant;
+package ru.baronessdev.free.enchant;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,29 +13,31 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.baronessdev.free.enchant.logging.LogType;
+import ru.baronessdev.free.enchant.logging.Logger;
+import ru.baronessdev.free.enchant.util.UpdateCheckerUtil;
 
 import java.util.HashMap;
+import java.util.logging.LogManager;
 
-/**
- * @author Black_Baroness
- */
-public final class Core extends JavaPlugin implements Listener {
+public final class Enchant extends JavaPlugin implements Listener {
 
     private final HashMap<Player, ItemStack> memory = new HashMap<>();
 
     @Override
     public void onEnable() {
-        // пишу немного пьяный, не бейте если будут косяки. Поправлю когда нибудь
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        checkUpdates();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (getConfig().getBoolean("use-permission")) {
-            if (!p.hasPermission(getConfig().getString("permission"))) return;
+        if (getConfig().getBoolean("use-permission") && !p.hasPermission(getConfig().getString("permission"))) {
+            return;
         }
 
         ItemStack current = e.getCurrentItem();
@@ -56,7 +58,6 @@ public final class Core extends JavaPlugin implements Listener {
             current.addEnchantments(meta.getStoredEnchants());
             e.setCancelled(true);
 
-            // майнкрафт творит удивительные вещи, поэтому выполняем замену на следующий тик
             Bukkit.getScheduler().runTask(this, () -> p.getInventory().setItem(e.getSlot(), current));
 
             sendMessage(p, "success");
@@ -68,7 +69,6 @@ public final class Core extends JavaPlugin implements Listener {
         memory.remove(p);
     }
 
-    @SuppressWarnings("all")
     @EventHandler
     private void onClose(InventoryCloseEvent e) {
         if (e.getPlayer() instanceof Player) memory.remove((Player) e.getPlayer());
@@ -83,5 +83,18 @@ public final class Core extends JavaPlugin implements Listener {
         String s = getConfig().getString(path);
         if (s.equals("")) return;
         p.sendMessage(s.replace('&', ChatColor.COLOR_CHAR));
+    }
+
+    private void checkUpdates() {
+        try {
+            int i = UpdateCheckerUtil.check(this);
+            if (i != -1) {
+                Logger.log(LogType.INFO, "New version found: v" + ChatColor.YELLOW + i + ChatColor.GRAY + " (Current: v" + getDescription().getVersion() + ")");
+                Logger.log(LogType.INFO, "Update now: " + ChatColor.AQUA + "market.baronessdev.ru/shop/licenses/");
+            }
+        } catch (UpdateCheckerUtil.UpdateCheckException e) {
+            Logger.log(LogType.ERROR, "Could not check for updates: " + e.getRootCause());
+            Logger.log(LogType.ERROR, "Please contact Baroness's Dev if this isn't your mistake.");
+        }
     }
 }

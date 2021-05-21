@@ -4,21 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru</groupId>
-    <artifactId>baronessdev.enchant</artifactId>
-    <version>1.0</version>
+    <groupId>ru.baronessdev.free</groupId>
+    <artifactId>enchant</artifactId>
+    <version>11</version>
     <packaging>jar</packaging>
 
     <name>BaronessEnchant</name>
 
-    <description>Плагин, добавляющий возможность зачаровывать вещи, перенося книгу с зачарованием на предмет прямо в
-        инвентаре
-    </description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>baronessdev.ru</url>
+    <url>https://market.baronessdev.ru/shop/baronessenchant.5/</url>
 
     <build>
         <plugins>
@@ -73,6 +70,11 @@
             <artifactId>spigot-api</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
         </dependency>
     </dependencies>
 </project>
